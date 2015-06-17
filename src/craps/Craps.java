@@ -13,6 +13,43 @@ import java.util.Random;
  */
 public class Craps {
 
+    public static void displayResultMessage(String result) {
+        System.out.println("You " + result + ".");
+    }
+
+    public static void displayDieMessage(int firstDie, int secondDie) {
+        System.out.println("You rolled " + firstDie + " and " + secondDie + ". Good job!");
+    }
+
+    /**
+     * Rolls a single die.
+     * @param randomGenerator The random generator to use.
+     * @param lowValue The lowest die value.
+     * @param highValue The highest die value.
+     * @return The result of the die.
+     */
+    public static int rollDie(Random randomGenerator, int lowValue, int highValue) {
+        return randomGenerator.nextInt(highValue - lowValue) + 1;
+    }
+
+    /**
+     * Rolls two dice.
+     * @param randomGenerator The random generator to use.
+     * @param lowValue The lowest die value.
+     * @param highValue The highest die value.
+     * @return The total of the two dice.
+     */
+    public static int rollDice(Random randomGenerator, int lowValue, int highValue) {
+        //2. roll two die.
+        int die1 = rollDie(randomGenerator, lowValue, highValue);
+        int die2 = rollDie(randomGenerator, lowValue, highValue);
+
+        displayDieMessage(die1, die2);
+
+        //3. sum the total.
+        return die1 + die2;
+    }
+
     public static void main(String[] args) {
         final int DIE_LOW_VALUE = 1;
         final int DIE_HIGH_VALUE = 6;
@@ -22,42 +59,28 @@ public class Craps {
 
         //1. while the game is not over.
         while (!done) {
-            //2. roll two die.
-//            int die1 = random.nextInt(DIE_HIGH_VALUE - DIE_LOW_VALUE) + 1;
-            int die1 = random.ints(1, DIE_LOW_VALUE, DIE_HIGH_VALUE + 1).findFirst().getAsInt();
-            int die2 = random.ints(1, DIE_LOW_VALUE, DIE_HIGH_VALUE + 1).findFirst().getAsInt();
-
-            System.out.println("You rolled " + die1 + " and " + die2 + ".");
-
-            //3. sum the total.
-            int total = die1 + die2;
+            int total = rollDice(random, DIE_LOW_VALUE, DIE_HIGH_VALUE);
 
             //4. if the total is 2, 3, or 12.
             if (total == 2 || total == 3 || total == 12) {
                 //the player loses.
-                System.out.println("You lose.");
+                displayResultMessage("lose");
                 done = true;
             } //5. else if the total is 7 or 11.
             else if (total == 7 || total == 11) {
-                System.out.println("You win.");
+                displayResultMessage("win");
                 done = true;
             } //6. else, save the total as point.
             else {
                 int point = total;
 
                 //6a. roll two die.
-                die1 = random.ints(1, DIE_LOW_VALUE, DIE_HIGH_VALUE + 1).findFirst().getAsInt();
-                die2 = random.ints(1, DIE_LOW_VALUE, DIE_HIGH_VALUE + 1).findFirst().getAsInt();
-
-                System.out.println("You rolled " + die1 + " and " + die2 + ".");
-
-                //6b. sum the total.
-                total = die1 + die2;
+                total = rollDice(random, DIE_LOW_VALUE, DIE_HIGH_VALUE);
 
                 //6c. if the total is point.
                 if (total == point) {
                     //the player wins.
-                    System.out.println("You win.");
+                    displayResultMessage("win");
                     done = true;
                 }
             }
